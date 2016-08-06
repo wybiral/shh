@@ -15,7 +15,7 @@ parser.add_argument('-k', '--key', default=None, type=str)
 args = parser.parse_args()
 
 if args.port is None:
-    port = shh.find_port()
+    port = shh.utils.find_port()
 else:
     port = args.port
 print('Using local port: {}'.format(port))
@@ -23,7 +23,7 @@ print('Using local port: {}'.format(port))
 server = TCPServer(('', port), SimpleHTTPRequestHandler)
 
 print('Creating hidden service...')
-hidden = shh.Hidden(port, key_file=args.key)
+hidden = shh.HiddenService(port, key_file=args.key)
 
 print('Serving at: ' + hidden.onion)
 server.serve_forever()

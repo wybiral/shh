@@ -1,5 +1,5 @@
 from flask import Flask
-from shh import Hidden
+from shh import HiddenService
 
 app = Flask(__name__)
 
@@ -7,9 +7,7 @@ app = Flask(__name__)
 def index():
     return 'Hello onion!'
 
-port = 5000
-
-hidden = Hidden(port)
+hidden = HiddenService()
 print hidden.onion
 
-app.run(port=port)
+app.run(port=hidden.port)
