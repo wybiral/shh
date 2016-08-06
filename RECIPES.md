@@ -1,7 +1,7 @@
 ## Serve Flask app
 ```python
 from flask import Flask
-from shh Hidden
+from shh import Hidden
 
 app = Flask(__name__)
 
