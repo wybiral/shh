@@ -25,7 +25,7 @@ class HiddenService(object):
         # Create hidden service
         service = controller.create_ephemeral_hidden_service(
             {80: self.port},
-            **options,
+            **options
         )
         # Write key if a file is provided
         if self.key_file is not None:
