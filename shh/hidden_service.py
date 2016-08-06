@@ -28,7 +28,7 @@ class HiddenService(object):
             **options
         )
         # Write key if a file is provided
-        if self.key_file is not None:
+        if self.key_file is not None and not path.exists(self.key_file):
             data = '{}:{}'.format(
                 service.private_key_type,
                 service.private_key,
