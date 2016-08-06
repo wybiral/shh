@@ -1,6 +1,8 @@
 # shh
 
-ssh is a library for creating Tor [hidden services](https://www.torproject.org/docs/hidden-services.html.en) from within a Python program.
+ssh is a library for creating Tor [hidden services](https://www.torproject.org/docs/hidden-services.html.en) from within a Python program. It also includes a small command line tool for serving any directory as a hidden service and providing you with the .onion link to access it.
+
+In order to start a hidden server you'll need to have [Tor Browser](https://www.torproject.org/projects/torbrowser.html.en#downloads) open.
 
 ## Download the code
 
@@ -14,8 +16,6 @@ python setup.py install
 ```
 
 ## Serve a directory as a Tor hidden service
-
-In order to start a hidden server you'll need to have [Tor Browser](https://www.torproject.org/projects/torbrowser.html.en#downloads) open.
 
 ### Without a key file
 The quickest way to serve a directory through a hidden service is to run it ephemerally without a key file. After running the following command the .onion where your directory is accessible address will be returned to the console.
