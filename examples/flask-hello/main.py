@@ -8,6 +8,6 @@ def index():
     return 'Hello onion!'
 
 hidden = HiddenService()
-print hidden.onion
+print(hidden.onion)
 
 app.run(port=hidden.port)

@@ -1,2 +1,2 @@
-import utils
-from hidden_service import HiddenService
+from . import utils
+from .hidden_service import HiddenService

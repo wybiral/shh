@@ -1,4 +1,4 @@
-from utils import find_port
+from .utils import find_port
 
 class HiddenService(object):
 

@@ -6,7 +6,7 @@ class MainHandler(web.RequestHandler):
         self.write('Hello onion!')
 
 hidden = HiddenService()
-print hidden.onion
+print(hidden.onion)
 
 app = web.Application([
     (r"/", MainHandler),
