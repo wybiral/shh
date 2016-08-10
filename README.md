@@ -6,16 +6,16 @@ In order to start a hidden server you'll need to have [Tor Browser](https://www.
 
 ## Installation
 
-Download the code:
+#### Install with pip
+```
+pip install shh
+```
+... or ...
+
+#### Install from Github:
 ```
 git clone https://github.com/wybiral/shh.git
-```
-Navigate to the folder:
-```
 cd shh
-```
-Install the Python module:
-```
 python setup.py install
 ```
 
