@@ -3,9 +3,27 @@ import time
 from argparse import ArgumentParser
 
 parser = ArgumentParser()
-parser.add_argument('-p', '--port', default=None, type=int)
-parser.add_argument('-k', '--key', default=None, type=str)
-parser.add_argument('-s', '--server', action='store_true')
+parser.add_argument(
+    '-p',
+    '--port',
+    default=None,
+    type=int,
+    help='local port to serve through Tor (otherwise random)',
+)
+parser.add_argument(
+    '-k',
+    '--key',
+    default=None,
+    type=str,
+    help='key file to use (will generate if not found)',
+)
+parser.add_argument(
+    '-s',
+    '--server',
+    default=False,
+    action='store_true',
+    help='create a basic file server as hidden service',
+)
 args = parser.parse_args()
 
 if args.port is None:
