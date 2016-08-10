@@ -5,3 +5,5 @@ dist/
 *.pyc
 *.pyo
 *.egg
+MANIFEST
+setup.cfg
