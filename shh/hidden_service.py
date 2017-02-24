@@ -2,18 +2,22 @@ from .utils import find_port
 
 class HiddenService(object):
 
-    def __init__(self, port=None, key_file=None):
+    def __init__(self, port=None, key_file=None, tor_port=9151):
         if port is None:
             port = find_port()
         self.port = int(port)
         self.key_file = key_file
+        self.tor_port = tor_port
         self.__start_service()
 
     def __start_service(self):
         from os import path
         from stem.control import Controller
         # Create controller
-        controller = Controller.from_port(address='127.0.0.1', port=9151)
+        controller = Controller.from_port(
+            address='127.0.0.1',
+            port=self.tor_port
+        )
         controller.authenticate(password='')
         options = {'await_publication': True}
         # Read key from file if file provided and exists
