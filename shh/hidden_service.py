@@ -4,7 +4,13 @@ from .utils import find_port
 
 class HiddenService(object):
 
-    def __init__(self, port=None, control_port=9151, key_raw=None, key_file=None):
+    def __init__(
+            self,
+            port=None,
+            control_port=9151,
+            key_raw=None,
+            key_file=None,
+            await_publication=False):
         if port is None:
             port = find_port()
         self.port = int(port)
@@ -19,16 +25,17 @@ class HiddenService(object):
             fp = open(key_file, 'r')
             self._key = fp.read().split(':', 1)
             fp.close()
-        self.__start_service()
+        self.__start_service(await_publication)
 
-    def __start_service(self):
+    def __start_service(self, await_publication):
         # Create controller
         controller = Controller.from_port(
             address='127.0.0.1',
             port=self.control_port
         )
         controller.authenticate(password='')
-        options = {'await_publication': True}
+        options = {}
+        options['await_publication'] = await_publication
         if self._key is not None:
             options['key_type'] = self._key[0]
             options['key_content'] = self._key[1]
