@@ -10,7 +10,7 @@ class HiddenService(object):
             control_port=9151,
             key_raw=None,
             key_file=None,
-            await_publication=False):
+            await_publication=True):
         if port is None:
             port = find_port()
         self.port = int(port)
