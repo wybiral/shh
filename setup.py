@@ -1,6 +1,6 @@
 from setuptools import setup
 
-version = '0.3.0'
+version = '0.6.0'
 
 setup(
     name='shh',
@@ -13,7 +13,7 @@ setup(
     packages=['shh'],
     platforms='any',
     install_requires=[
-        'stem==1.4.0',
+        'stem==1.5.4',
     ],
     classifiers=[
         'Intended Audience :: Developers',

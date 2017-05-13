@@ -6,14 +6,14 @@ class HiddenService(object):
 
     def __init__(
             self,
-            port=None,
+            ports=None,
             control_port=9151,
             key_raw=None,
             key_file=None,
             await_publication=True):
-        if port is None:
-            port = find_port()
-        self.port = int(port)
+        if ports is None:
+            ports = {80: find_port()}
+        self.ports = ports
         self.control_port = control_port
         self._key = None
         self._key_file = key_file
@@ -41,7 +41,7 @@ class HiddenService(object):
             options['key_content'] = self._key[1]
         # Create hidden service
         service = controller.create_ephemeral_hidden_service(
-            {80: self.port},
+            self.ports,
             **options
         )
         if self._key is None:

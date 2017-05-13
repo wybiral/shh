@@ -10,4 +10,5 @@ def index():
 hidden = HiddenService()
 print(hidden.onion)
 
-app.run(port=hidden.port)
+port = hidden.ports[80]
+app.run(port=port)

@@ -12,7 +12,11 @@ app = web.Application([
     (r"/", MainHandler),
 ])
 
-app.listen(hidden.port)
+port = None
+for local_port, tor_port in 
+
+port = hidden.ports[80]
+app.listen(port)
 try:
     ioloop.IOLoop.instance().start()
 except KeyboardInterrupt:

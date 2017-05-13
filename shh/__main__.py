@@ -27,8 +27,8 @@ else:
 print('Local port: {}'.format(port))
 
 print('Creating hidden service...')
-hidden = shh.HiddenService(port, key_file=args.key)
+hidden = shh.HiddenService(ports={80: port}, key_file=args.key)
 print('Serving at: ' + hidden.onion)
 
 while True:
-    time.sleep(1)
+    time.sleep(10)

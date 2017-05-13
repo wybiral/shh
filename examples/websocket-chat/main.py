@@ -44,7 +44,8 @@ app = web.Application([
 if __name__ == '__main__':
     hidden = HiddenService()
     print(hidden.onion)
-    app.listen(hidden.port)
+    port = hidden.ports[80]
+    app.listen(port)
     try:
         ioloop.IOLoop.instance().start()
     except KeyboardInterrupt:
