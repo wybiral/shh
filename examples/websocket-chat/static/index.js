@@ -1,35 +1,48 @@
-function update(message) {
-    let output = document.querySelector('#output');
-    let outer = document.createElement('div');
-    let inner = document.createElement('div');
-    inner.className = 'message';
-    inner.appendChild(document.createTextNode(message));
+const update = msg => {
+    const log = document.getElementById('log');
+    const outer = document.createElement('div');
+    const inner = document.createElement('div');
+    inner.innerText = msg;
     outer.appendChild(inner);
-    output.appendChild(outer);
+    log.appendChild(outer);
+    return outer;
 }
 
-window.onload = function() {
+window.onload = () => {
+    const prefix = 'anon';
     let userId = null;
     let socket = new WebSocket('ws://' + window.location.host + '/socket');
 
-    socket.onmessage = function(evt) {
+    socket.onmessage = evt => {
         let msg = JSON.parse(evt.data);
-        if (msg.type === 'join') {
-            userId = msg.id;
-        } else if (msg.type === 'msg') {
-            let name = msg.id === userId ? 'you' : 'human' + msg.id;
-            update(name + ': ' + msg.msg);
+        switch (msg.type) {
+            case 'welcome':
+                userId = msg.id;
+                update('You are ' + prefix + userId + '.').className = 'info';
+                break;
+            case 'join':
+                update(prefix + msg.id + ' has joined.').className = 'info';
+                break;
+            case 'leave':
+                update(prefix + msg.id + ' has left.').className = 'info';
+                break;
+            case 'msg':
+                const self = (msg.id === userId);
+                const name = self ? 'you' : 'anon' + msg.id;
+                const className = self ? 'msg self' : 'msg';
+                update(name + ': ' + msg.msg).className = className;
+                break;
         }
     };
 
-    let inputForm = document.querySelector('#input-form');
-    let inputText = document.querySelector('#input-text');
-    inputForm.onsubmit = function(evt) {
+    const form = document.getElementById('form');
+    const input = document.getElementById('input');
+    form.onsubmit = evt => {
         evt.preventDefault();
-        let msg = inputText.value;
-        inputText.value = '';
+        const msg = input.value;
+        input.value = '';
         socket.send(msg);
-        setTimeout(() => inputText.focus(), 0);
+        setTimeout(() => input.focus(), 0);
     };
-    inputText.focus();
+    input.focus();
 };

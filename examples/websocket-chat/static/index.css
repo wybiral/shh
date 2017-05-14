@@ -1,12 +1,16 @@
 * {
     margin: 0;
     padding: 0;
-    border: none;
-    outline: none;
+    border: 0;
+    outline: 0;
+    font-family: arial;
+    box-sizing: border-box;
+    color: inherit;
 }
 
 body {
-    background: #e5e5e5;
+    background: #1e1e1e;
+    color: #c5c8c6;
 }
 
 noscript > div {
@@ -15,27 +19,41 @@ noscript > div {
     display: inline-block;
 }
 
-#output {
+#log {
     position: fixed;
     top: 0;
     right: 0;
     bottom: 25px;
     left: 0;
+    overflow: auto;
+    padding: 10px;
 }
 
-#output .message {
-    margin: 5px 5px 0px 5px;
-    padding: 3px 5px;
+#log .msg > div {
+    padding: 5px 7px;
     display: inline-block;
 }
-
-#output .message, #input-text, noscript > div {
-    font-size: 16px;
-    background: #ffffff;
-    box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.15);
+#log div+div {
+    margin-top: 10px;
 }
 
-#input-text {
+#log .info {
+    color: #676867;
+}
+
+#log .msg > div, #input, noscript > div {
+    font-size: 16px;
+    background: #282a2e;
+    box-shadow: 0 3px 7px 0 rgba(0, 0, 0, 0.2);
+    border-radius: 3px;
+}
+
+#log .msg.self > div {
+    color: #a6e22e;
+}
+
+#form #input {
+    background: #282a2e;
     position: fixed;
     right: 0;
     bottom: 0;

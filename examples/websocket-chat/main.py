@@ -22,18 +22,26 @@ class SocketHandler(websocket.WebSocketHandler):
         global clients
         self.id = next_id
         next_id += 1
+        broadcast({'type': 'join', 'id': self.id})
         clients[self.id] = self
-        self.write_message(json.dumps({'type': 'join', 'id': self.id}))
+        self.write_message(json.dumps({'type': 'welcome', 'id': self.id}))
 
     def on_message(self, msg):
         global clients
-        update = json.dumps({'type': 'msg', 'id': self.id, 'msg': msg})
-        for client in clients.values():
-            client.write_message(update)
+        msg = msg.strip()
+        if 0 < len(msg) <= 140:
+            broadcast({'type': 'msg', 'id': self.id, 'msg': msg})
 
     def on_close(self):
         if self.id in clients:
             del clients[self.id]
+            broadcast({'type': 'leave', 'id': self.id})
+
+
+def broadcast(evt):
+    data = json.dumps(evt)
+    for client in clients.values():
+        client.write_message(data)
 
 
 app = web.Application([
