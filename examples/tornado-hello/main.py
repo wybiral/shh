@@ -12,9 +12,6 @@ app = web.Application([
     (r"/", MainHandler),
 ])
 
-port = None
-for local_port, tor_port in 
-
 port = hidden.ports[80]
 app.listen(port)
 try:
