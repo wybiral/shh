@@ -15,6 +15,8 @@ window.onload = () => {
 
     socket.onmessage = evt => {
         let msg = JSON.parse(evt.data);
+        const log = document.getElementById('log');
+        const scroll = log.scrollTop > log.scrollHeight - log.clientHeight - 1;
         switch (msg.type) {
             case 'welcome':
                 userId = msg.id;
@@ -32,6 +34,9 @@ window.onload = () => {
                 const className = self ? 'msg self' : 'msg';
                 update(name + ': ' + msg.msg).className = className;
                 break;
+        }
+        if (scroll) {
+            log.scrollTop = log.scrollHeight - log.clientHeight;
         }
     };
 

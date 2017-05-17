@@ -21,12 +21,11 @@ noscript > div {
 
 #log {
     position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 25px;
-    left: 0;
+    top: 10px;
+    right: 10px;
+    bottom: 30px;
+    left: 10px;
     overflow: auto;
-    padding: 10px;
 }
 
 #log .msg > div {
