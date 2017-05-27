@@ -7,7 +7,7 @@ parser.add_argument(
     '-p',
     '--port',
     default=None,
-    type=int,
+    type=str,
     help='local port to serve through Tor (otherwise random)',
 )
 parser.add_argument(
