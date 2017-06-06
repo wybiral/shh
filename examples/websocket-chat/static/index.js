@@ -1,52 +1,86 @@
-const update = msg => {
+let socket;
+
+const update = (msg, className) => {
     const log = document.getElementById('log');
     const outer = document.createElement('div');
     const inner = document.createElement('div');
+    outer.className = className;
     inner.innerText = msg;
     outer.appendChild(inner);
+    const scroll = log.scrollTop > log.scrollHeight - log.clientHeight - 1;
     log.appendChild(outer);
+    if (scroll) {
+        log.scrollTop = log.scrollHeight - log.clientHeight;
+    }
     return outer;
 }
 
-window.onload = () => {
-    const prefix = 'anon';
+const connect = () => {
     let userId = null;
-    let socket = new WebSocket('ws://' + window.location.host + '/socket');
-
+    const connecting = update('Connecting...', 'info').querySelector('div');
+    socket = new WebSocket('ws://' + window.location.host + '/socket');
+    socket.onopen = evt => {
+        connecting.innerText = 'You are now connected.';
+    };
+    socket.onclose = evt => {
+        connecting.innerText = 'Disconnected.';
+        setTimeout(connect, 15);
+    };
     socket.onmessage = evt => {
         let msg = JSON.parse(evt.data);
-        const log = document.getElementById('log');
-        const scroll = log.scrollTop > log.scrollHeight - log.clientHeight - 1;
         switch (msg.type) {
             case 'welcome':
                 userId = msg.id;
-                update('You are ' + prefix + userId + '.').className = 'info';
+                update('You are ' + userId + '.', 'info');
                 break;
             case 'join':
-                update(prefix + msg.id + ' has joined.').className = 'info';
+                update(msg.id + ' has joined.', 'info');
                 break;
             case 'leave':
-                update(prefix + msg.id + ' has left.').className = 'info';
+                update(msg.id + ' has left.', 'info');
+                break;
+            case 'name':
+                if (msg.old == userId) {
+                    update('You are now ' + msg.new, 'info');
+                    userId = msg.new;
+                } else {
+                    update(msg.old + ' is now ' + msg.new, 'info');
+                }
                 break;
             case 'msg':
-                const self = (msg.id === userId);
-                const name = self ? 'you' : 'anon' + msg.id;
-                const className = self ? 'msg self' : 'msg';
-                update(name + ': ' + msg.msg).className = className;
+                let className = 'msg';
+                if (msg.id == userId) {
+                    className += ' self';
+                }
+                update(msg.id + ': ' + msg.body, className);
+                break;
+            case 'list':
+                update('Currently online: ' + msg.ids.join(', '), 'info');
                 break;
         }
-        if (scroll) {
-            log.scrollTop = log.scrollHeight - log.clientHeight;
-        }
     };
+};
 
+window.onload = () => {
+    connect();
     const form = document.getElementById('form');
     const input = document.getElementById('input');
     form.onsubmit = evt => {
         evt.preventDefault();
-        const msg = input.value;
+        const msg = input.value.trim();
         input.value = '';
-        socket.send(msg);
+        if (msg.startsWith('/')) {
+            const parts = msg.split(' ');
+            if (parts[0] == '/nick') {
+                socket.send(JSON.stringify({type: 'name', id: parts[1]}));
+            } else if (parts[0] == '/list') {
+                socket.send(JSON.stringify({type: 'list'}));
+            } else {
+                update("Unknown commands: " + parts[0], 'info');
+            }
+        } else {
+            socket.send(JSON.stringify({type: 'msg', body: msg}));
+        }
         setTimeout(() => input.focus(), 0);
     };
     input.focus();

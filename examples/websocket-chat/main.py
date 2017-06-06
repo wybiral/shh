@@ -20,17 +20,42 @@ class SocketHandler(websocket.WebSocketHandler):
     def open(self):
         global next_id
         global clients
-        self.id = next_id
+        self.id = 'anon{}'.format(next_id)
         next_id += 1
         broadcast({'type': 'join', 'id': self.id})
         clients[self.id] = self
         self.write_message(json.dumps({'type': 'welcome', 'id': self.id}))
+        self.send_list()
+
+    def send_list(self):
+        global clients
+        ids = list(clients.keys())
+        ids.sort()
+        self.write_message(json.dumps({'type': 'list', 'ids': ids}))
 
     def on_message(self, msg):
+        try:
+            self.handle_message(json.loads(msg))
+        except Exception as e:
+            print(e)
+            self.close()
+
+    def handle_message(self, msg):
         global clients
-        msg = msg.strip()
-        if 0 < len(msg) <= 140:
-            broadcast({'type': 'msg', 'id': self.id, 'msg': msg})
+        type = msg['type']
+        if type == 'msg':
+            body = msg['body']
+            broadcast({'type': 'msg', 'id': self.id, 'body': body})
+        elif type == 'list':
+            self.send_list()
+        elif type == 'name':
+            oldid = self.id
+            newid = msg['id']
+            if newid not in clients:
+                del clients[oldid]
+                clients[newid] = self
+                self.id = newid
+                broadcast({'type': 'name', 'old': oldid, 'new': newid})
 
     def on_close(self):
         if self.id in clients:
@@ -58,4 +83,3 @@ if __name__ == '__main__':
         ioloop.IOLoop.instance().start()
     except KeyboardInterrupt:
         ioloop.IOLoop.instance().stop()
-
