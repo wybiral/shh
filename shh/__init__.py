@@ -8,4 +8,4 @@ from .hidden_service import HiddenService
 from .proxy import Proxy
 
 __author__ = 'Davy Wybiral (davy.wybiral@gmail.com)'
-__version__ = '0.7.0'
+__version__ = '0.8.0'

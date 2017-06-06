@@ -7,7 +7,7 @@ class HiddenService(object):
     def __init__(
             self,
             ports=None,
-            control_port=9151,
+            control_port=9051,
             key_raw=None,
             key_file=None,
             await_publication=True):

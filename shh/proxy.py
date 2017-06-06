@@ -3,7 +3,7 @@ import socks
 
 class Proxy:
 
-    def __init__(self, host='127.0.0.1', port=9150):
+    def __init__(self, host='127.0.0.1', port=9050):
         self.host = host
         self.port = port
 
