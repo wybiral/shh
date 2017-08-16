@@ -17,6 +17,13 @@ parser.add_argument(
     type=str,
     help='key file to use (will generate if not found)',
 )
+parser.add_argument(
+    '-c',
+    '--control_port',
+    default=9051,
+    type=int,
+    help='control port for Tor instance',
+)
 
 args = parser.parse_args()
 
@@ -26,8 +33,14 @@ else:
     port = args.port
 print('Local port: {}'.format(port))
 
+control_port = args.control_port
+
 print('Creating hidden service...')
-hidden = shh.HiddenService(ports={80: port}, key_file=args.key)
+hidden = shh.HiddenService(
+    ports={80: port},
+    key_file=args.key,
+    control_port=control_port
+)
 print('Serving at: ' + hidden.onion)
 
 while True:
